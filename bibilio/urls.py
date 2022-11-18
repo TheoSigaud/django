@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import signin, signup,signout, home
+from .views import signin, signup,signout, home, book, createAuthor, author, editor, gender, createEditor, createGender
 
 urlpatterns = [
     path('home/', home),
@@ -23,4 +23,11 @@ urlpatterns = [
     path('login/', signin, name='login'),
     path('signup/', signup, name ='signup'),
     path('signout/', signout, name = 'logout'),
+    path('book/', book, name = 'book'),
+    path('createAuthor/', createAuthor, name = 'createAuthor'),
+    path('author/', author, name = 'author'),
+    path('editor/', editor, name = 'editor'),
+    path('gender/', gender, name = 'gender'),
+    path('createEditor/', createEditor, name = 'createEditor'),
+    path('createGender/', createGender, name = 'createGender'),
 ]

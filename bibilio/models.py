@@ -12,7 +12,7 @@ class Author(models.Model):
     firstname = models.CharField(max_length=255)     
 
 class Gender(models.Model):
-    Name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

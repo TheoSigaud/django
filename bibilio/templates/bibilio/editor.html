@@ -1,0 +1,12 @@
+<h1>Liste des éditeurs</h1>
+
+<table>
+    <tr>
+        <th>Nom</th>
+    </tr>
+    {% for item in editors %}
+    <tr> 
+        <td>{{ item.name }}</td>
+    </tr>
+    {% endfor %}
+</table>

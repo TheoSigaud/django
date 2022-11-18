@@ -1,0 +1,14 @@
+<h1>Liste des auteurs</h1>
+
+<table>
+    <tr>
+        <th>Prénom</th>
+        <th>Nom</th>
+    </tr>
+    {% for item in authors %}
+    <tr> 
+        <td>{{ item.firstname }}</td>
+        <td>{{ item.name }}</td>
+    </tr>
+    {% endfor %}
+</table>

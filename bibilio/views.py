@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm
+from bibilio.models import Book, Author, Gender, Editor
 
 def home(request):
     if request.user.is_authenticated:
@@ -53,3 +55,72 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('/signout/')
+
+
+def book(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username =username, password = password)
+ 
+        if user is not None:
+            login(request,user)
+            return redirect('/home')
+        else:
+            # form = BookForm()
+            return render(request,'bibilio/signin.html',{'form':form})
+     
+    else:
+        formBook = BookForm()
+        formAuthor = AuthorForm()
+        formGender = GenderForm()
+        formEditor = EditorForm()
+        return render(request, 'bibilio/book.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})
+
+def createAuthor(request):
+    if request.method == 'POST':
+        form = AuthorForm(request.POST)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/createAuthor')
+    else:
+        form = AuthorForm()
+        return render(request, 'bibilio/createAuthor.html',{'form':form})     
+
+def author(request):
+    authors = Author.objects.all()
+
+    return render(request, 'bibilio/author.html', {'authors':authors})          
+
+def editor(request):
+    editors = Editor.objects.all()
+
+    return render(request, 'bibilio/editor.html', {'editors':editors})   
+
+def gender(request):
+    genders = Gender.objects.all()
+
+    return render(request, 'bibilio/gender.html', {'genders':genders})         
+
+def createEditor(request):
+    if request.method == 'POST':
+        form = EditorForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/createEditor')
+    else:
+        form = EditorForm()
+        return render(request, 'bibilio/createEditor.html',{'form':form})
+
+def createGender(request):
+    if request.method == 'POST':
+        form = GenderForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/createGender')
+    else:
+        form = GenderForm()
+        return render(request, 'bibilio/createGender.html',{'form':form})        
