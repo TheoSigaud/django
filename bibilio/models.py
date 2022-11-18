@@ -28,6 +28,7 @@ class Library(models.Model):
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     zipcode = models.IntegerField()
+    profile = models.ManyToManyField(Profile)
     
 class Book(models.Model):
     title = models.CharField(max_length=255)
@@ -44,7 +45,7 @@ class Group(models.Model):
     profile = models.ManyToManyField(Profile)
     
 class Loan(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book = models.ManyToManyField(Book)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     library = models.ForeignKey(Library, on_delete=models.CASCADE)
     date_loan = models.DateTimeField(null=True, blank=True)
