@@ -7,12 +7,21 @@ from django.dispatch import receiver
 class Editor(models.Model):
     name = models.CharField(max_length=255)   
 
+    def __str__(self):
+        return self.name
+
 class Author(models.Model):
     name = models.CharField(max_length=255)     
-    firstname = models.CharField(max_length=255)     
+    firstname = models.CharField(max_length=255)    
+
+    def __str__(self):
+        return self.name + ' ' + self.firstname 
 
 class Gender(models.Model):
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
