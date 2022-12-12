@@ -70,11 +70,12 @@ def signout(request):
 
 def createBook(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
- 
+        form = BookForm(request.POST, request.FILES)
+
         if form.is_valid():
+            
             form.save()
-            return redirect('/book')
+        return redirect('/book')
     else:
         formBook = BookForm()
         formAuthor = AuthorForm()
@@ -91,7 +92,7 @@ def updateBook(request):
     id=request.GET.get('id','Not available')
     book = Book.objects.get(pk=id)
     if request.method == 'POST':
-        form = BookForm(request.POST, instance=book)
+        form = BookForm(request.POST, request.FILES, instance=book)
  
         if form.is_valid():
             form.save()
