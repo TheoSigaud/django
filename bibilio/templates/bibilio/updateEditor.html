@@ -1,7 +1,7 @@
-<h1>Modification de livre</h1>
+<h1>Modification de éditeur</h1>
 
 <form method = 'post'>
     {% csrf_token %}
-    {{formBook.as_p}}
+    {{form.as_p}}
     <input type = "submit" value = "Submit">
 </form>

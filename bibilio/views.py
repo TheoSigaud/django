@@ -155,4 +155,61 @@ def createGender(request):
             return redirect('/gender')
     else:
         form = GenderForm()
-        return render(request, 'bibilio/createGender.html',{'form':form})        
+        return render(request, 'bibilio/createGender.html',{'form':form}) 
+
+def deleteGender(request):
+    id=request.GET.get('id','Not available')
+    get_object_or_404(Gender, pk=id).delete()
+    return redirect('/gender')
+
+def updateGender(request):
+    id=request.GET.get('id','Not available')
+    gender = Gender.objects.get(pk=id)
+    if request.method == 'POST':
+        form = GenderForm(request.POST, instance=gender)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/gender')
+    else:
+        form = GenderForm(instance=gender)
+
+        return render(request, 'bibilio/updateGender.html',{'form':form})      
+
+def deleteEditor(request):
+    id=request.GET.get('id','Not available')
+    get_object_or_404(Editor, pk=id).delete()
+    return redirect('/editor')
+
+def updateEditor(request):
+    id=request.GET.get('id','Not available')
+    editor = Editor.objects.get(pk=id)
+    if request.method == 'POST':
+        form = GenderForm(request.POST, instance=editor)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/editor')
+    else:
+        form = EditorForm(instance=editor)
+
+        return render(request, 'bibilio/updateEditor.html',{'form':form})       
+
+def deleteAuthor(request):
+    id=request.GET.get('id','Not available')
+    get_object_or_404(Author, pk=id).delete()
+    return redirect('/author')
+
+def updateAuthor(request):
+    id=request.GET.get('id','Not available')
+    author = Author.objects.get(pk=id)
+    if request.method == 'POST':
+        form = AuthorForm(request.POST, instance=author)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/author')
+    else:
+        form = AuthorForm(instance=author)
+
+        return render(request, 'bibilio/updateAuthor.html',{'form':form}) 
