@@ -9,6 +9,10 @@
     <tr> 
         <td>{{ item.firstname }}</td>
         <td>{{ item.name }}</td>
+        <td>
+            <a href="update/?id={{ item.id }}">Modifier</a>
+            <a href="delete/?id={{ item.id }}">Supprimer</a>
+        </td>
     </tr>
     {% endfor %}
 </table>

@@ -42,7 +42,7 @@ class Library(models.Model):
     
 class Book(models.Model):
     title = models.CharField(max_length=255)
-    jacket = models.CharField(max_length=255)
+    jacket = models.ImageField(upload_to='images')
     editor = models.ForeignKey(Editor, on_delete=models.CASCADE)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
