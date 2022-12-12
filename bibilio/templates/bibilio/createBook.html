@@ -1,0 +1,7 @@
+<h1>Création de livre</h1>
+
+<form method = 'post'>
+    {% csrf_token %}
+    {{formBook.as_p}}
+    <input type = "submit" value = "Submit">
+</form>

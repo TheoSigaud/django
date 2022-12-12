@@ -24,8 +24,6 @@ class BookForm(ModelForm):
         model = Book
         fields = ['title', 'author', 'editor', 'gender', 'jacket']
 
-
-
 class RegisterForm(UserCreationForm):
   first_name = forms.CharField(label='First name', max_length=100)
   last_name = forms.CharField(label='Last name', max_length=100)

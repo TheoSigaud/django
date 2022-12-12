@@ -1,7 +1,18 @@
-<h1>Création de livre</h1>
+<h1>Liste des livres</h1>
 
-<form method = 'post'>
-    {% csrf_token %}
-    {{formBook.as_p}}
-    <input type = "submit" value = "Submit">
-</form>
+<table>
+    <tr>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>Editeur</th>
+        <th>gender</th>
+    </tr>
+    {% for item in books %}
+    <tr> 
+        <td>{{ item.title }}</td>
+        <td>{{ item.author }}</td>
+        <td>{{ item.editor }}</td>
+        <td>{{ item.gender }}</td>
+    </tr>
+    {% endfor %}
+</table>
