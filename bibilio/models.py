@@ -32,6 +32,7 @@ class Profile(models.Model):
     city = models.CharField(max_length=255)
     role = models.CharField(max_length=255, null=True)
     zipcode = models.IntegerField(null=True)
+    is_staff = models.BooleanField(null=True)
 
 class Library(models.Model):
     name = models.CharField(max_length=255)

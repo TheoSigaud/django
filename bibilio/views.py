@@ -17,7 +17,6 @@ def registration_views(request):
             raw_password = form.cleaned_data.get('password1')
             account = authenticate(email=email, password=raw_password)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')            
-            # modify the Profile table
             # get the user id
             user_id = request.user.id
             # get the user object
@@ -28,6 +27,9 @@ def registration_views(request):
             profile.address = form.cleaned_data.get('adress')
             profile.city = form.cleaned_data.get('city')
             profile.zipcode = form.cleaned_data.get('zipCode')
+            profile.firstname = form.cleaned_data.get('first_name')
+            profile.name = form.cleaned_data.get('last_name')
+            profile.is_staff = form.cleaned_data.get('is_staff')
             # save the profile
             profile.save()
             return redirect('/home/')
@@ -47,19 +49,24 @@ def home(request):
 def signin(request):
     if request.user.is_authenticated:
         return redirect('/home')
-     
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username =username, password = password)
- 
+        
         if user is not None:
             login(request,user)
-            return redirect('/home')
+            #get user object
+            user = User.objects.get(username=username)
+            #get user profile
+            profile = Profile.objects.get(user=user)
+            if profile.is_staff == 1:
+                return redirect('/library')
+            else:
+                return redirect('/home')
         else:
             form = AuthenticationForm()
             return render(request,'bibilio/signin.html',{'form':form})
-     
     else:
         form = AuthenticationForm()
         return render(request, 'bibilio/signin.html', {'form':form})
