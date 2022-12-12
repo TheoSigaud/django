@@ -13,6 +13,10 @@
         <td>{{ item.author }}</td>
         <td>{{ item.editor }}</td>
         <td>{{ item.gender }}</td>
+        <td>
+            <a href="update/?id={{ item.id }}">Modifier</a>
+            <a href="delete/?id={{ item.id }}">Supprimer</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
