@@ -25,7 +25,7 @@ def registration_views(request):
             # get the user profile
             profile = Profile.objects.get(user=user)
             # modify the profile
-            profile.adress = form.cleaned_data.get('adress')
+            profile.address = form.cleaned_data.get('adress')
             profile.city = form.cleaned_data.get('city')
             profile.zipcode = form.cleaned_data.get('zipCode')
             # save the profile
