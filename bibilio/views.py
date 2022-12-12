@@ -1,9 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm
 from bibilio.models import Book, Author, Gender, Editor
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm, authenticate
+from django.contrib.auth.forms import AuthenticationForm, authenticate
 from .forms import RegisterForm
 from .models import Profile, User
 
@@ -75,13 +75,34 @@ def createBook(request):
         if form.is_valid():
             form.save()
             return redirect('/book')
-     
     else:
         formBook = BookForm()
         formAuthor = AuthorForm()
         formGender = GenderForm()
         formEditor = EditorForm()
-        return render(request, 'bibilio/createBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})
+        return render(request, 'bibilio/createBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})    
+
+def deleteBook(request):
+    id=request.GET.get('id','Not available')
+    get_object_or_404(Book, pk=id).delete()
+    return redirect('/book')
+
+def updateBook(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/book')
+    else:
+        id=request.GET.get('id','Not available')
+        formBook = BookForm()
+        formAuthor = AuthorForm()
+        formGender = GenderForm()
+        formEditor = EditorForm()
+        book = Book.objects.filter(pk=id)
+
+        return render(request, 'bibilio/updateBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})      
 
 def createAuthor(request):
     if request.method == 'POST':
