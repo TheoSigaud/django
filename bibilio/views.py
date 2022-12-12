@@ -88,19 +88,19 @@ def deleteBook(request):
     return redirect('/book')
 
 def updateBook(request):
+    id=request.GET.get('id','Not available')
+    book = Book.objects.get(pk=id)
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = BookForm(request.POST, instance=book)
  
         if form.is_valid():
             form.save()
             return redirect('/book')
     else:
-        id=request.GET.get('id','Not available')
-        formBook = BookForm()
         formAuthor = AuthorForm()
         formGender = GenderForm()
         formEditor = EditorForm()
-        book = Book.objects.filter(pk=id)
+        formBook = BookForm(instance=book)
 
         return render(request, 'bibilio/updateBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})      
 
