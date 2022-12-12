@@ -3,34 +3,46 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm
 from bibilio.models import Book, Author, Gender, Editor
+from django.contrib.auth.forms import AuthenticationForm,UserCreationForm, authenticate
+from .forms import RegisterForm
+from .models import Profile, User
+
+def registration_views(request):
+    context = {}
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            email = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+            account = authenticate(email=email, password=raw_password)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')            
+            # modify the Profile table
+            # get the user id
+            user_id = request.user.id
+            # get the user object
+            user = User.objects.get(id=user_id)
+            # get the user profile
+            profile = Profile.objects.get(user=user)
+            # modify the profile
+            profile.adress = form.cleaned_data.get('adress')
+            profile.city = form.cleaned_data.get('city')
+            profile.zipcode = form.cleaned_data.get('zipCode')
+            # save the profile
+            profile.save()
+            return redirect('/home/')
+        else:
+            context['registration_form'] = form
+    else:
+        form = RegisterForm()
+        context['registration_form'] = form
+    return render(request, 'bibilio/signup.html', context)
 
 def home(request):
     if request.user.is_authenticated:
         return render(request, 'bibilio/home.html')
     else:
         return redirect('/login')
-
-def signup(request):
-    if request.user.is_authenticated:
-        return redirect('/home')
-     
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
- 
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(username = username,password = password)
-            login(request, user)
-            return redirect('/home')
-         
-        else:
-            return render(request,'bibilio/signup.html',{'form':form})
-     
-    else:
-        form = UserCreationForm()
-        return render(request,'bibilio/signup.html',{'form':form})
 
 def signin(request):
     if request.user.is_authenticated:
@@ -54,8 +66,7 @@ def signin(request):
 
 def signout(request):
     logout(request)
-    return redirect('/signout/')
-
+    return redirect('/home/')
 
 def createBook(request):
     if request.method == 'POST':

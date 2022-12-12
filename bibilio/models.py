@@ -30,7 +30,8 @@ class Profile(models.Model):
     password = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    zipcode = models.IntegerField()
+    role = models.CharField(max_length=255, null=True)
+    zipcode = models.IntegerField(null=True)
 
 class Library(models.Model):
     name = models.CharField(max_length=255)
