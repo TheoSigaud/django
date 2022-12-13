@@ -38,11 +38,11 @@ def registration_views(request):
         context['registration_form'] = form
     return render(request, 'bibilio/signup.html', context)
 
-def home(request):
-    if request.user.is_authenticated:
-        return render(request, 'bibilio/home.html')
-    else:
-        return redirect('/login')
+# def home(request):
+#     if request.user.is_authenticated:
+#         return render(request, 'bibilio/home.html')
+#     else:
+#         return redirect('/login')
 
 def signin(request):
     if request.user.is_authenticated:
@@ -129,7 +129,12 @@ def editor(request):
 def book(request):
     books = Book.objects.all()
 
-    return render(request, 'bibilio/book.html', {'books':books})       
+    return render(request, 'bibilio/book.html', {'books':books}) 
+
+def home(request):
+    books = Book.objects.all()
+
+    return render(request, 'bibilio/home.html', {'books':books})           
 
 def gender(request):
     genders = Gender.objects.all()
