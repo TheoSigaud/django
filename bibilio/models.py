@@ -43,17 +43,28 @@ class Library(models.Model):
     
 class Book(models.Model):
     title = models.CharField(max_length=255)
-    jacket = models.CharField(max_length=255)
+    jacket = models.ImageField(upload_to='images')
     editor = models.ForeignKey(Editor, on_delete=models.CASCADE)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
 
+class Group(models.Model):
+    profile = models.ManyToManyField(Profile)
+    name = models.CharField(max_length=255)
+    date_group = models.DateTimeField()
+
+class Forum(models.Model):
+    title = models.CharField(max_length=255)
+    creator = models.OneToOneField(Profile, on_delete=models.CASCADE)
+
+class Message(models.Model):
+    content = models.TextField()
+    forum = models.OneToOneField(Forum, on_delete=models.CASCADE)
+    author = models.OneToOneField(Profile, on_delete=models.CASCADE)
+
 class Session(models.Model):
     date = models.DateTimeField()
-
-class Group(models.Model):
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    profile = models.ManyToManyField(Profile)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
     
 class Loan(models.Model):
     book = models.ManyToManyField(Book)

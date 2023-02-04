@@ -1,9 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
-from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm
-from bibilio.models import Book, Author, Gender, Editor
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm, authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm, ForumForm
+from bibilio.models import Book, Author, Gender, Editor, Group, Forum
+from django.contrib.auth.forms import AuthenticationForm, authenticate
 from .forms import RegisterForm
 from .models import Profile, User
 
@@ -40,11 +40,12 @@ def registration_views(request):
         context['registration_form'] = form
     return render(request, 'bibilio/signup.html', context)
 
-def home(request):
-    if request.user.is_authenticated:
-        return render(request, 'bibilio/home.html')
-    else:
-        return redirect('/')
+
+# def home(request):
+#     if request.user.is_authenticated:
+#         return render(request, 'bibilio/home.html')
+#     else:
+#         return redirect('/login')
 
 def signin(request):
     if request.user.is_authenticated:
@@ -77,18 +78,52 @@ def signout(request):
 
 def createBook(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
- 
+        form = BookForm(request.POST, request.FILES)
+
         if form.is_valid():
+            
             form.save()
-            return redirect('/book')
-     
+        return redirect('/book')
     else:
         formBook = BookForm()
         formAuthor = AuthorForm()
         formGender = GenderForm()
         formEditor = EditorForm()
-        return render(request, 'bibilio/createBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})
+        return render(request, 'bibilio/createBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})  
+
+def createGroup(request):
+    if request.method == 'POST':
+        form = GroupForm(request.POST)
+
+        if form.is_valid():
+            
+            form.save()
+        return redirect('/group')
+    else:
+        form = GroupForm()
+        return render(request, 'bibilio/createGroup.html',{'form':form})
+
+def deleteBook(request):
+    id=request.GET.get('id','Not available')
+    get_object_or_404(Book, pk=id).delete()
+    return redirect('/book')
+
+def updateBook(request):
+    id=request.GET.get('id','Not available')
+    book = Book.objects.get(pk=id)
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES, instance=book)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/book')
+    else:
+        formAuthor = AuthorForm()
+        formGender = GenderForm()
+        formEditor = EditorForm()
+        formBook = BookForm(instance=book)
+
+        return render(request, 'bibilio/updateBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})      
 
 def createAuthor(request):
     if request.method == 'POST':
@@ -114,7 +149,48 @@ def editor(request):
 def book(request):
     books = Book.objects.all()
 
-    return render(request, 'bibilio/book.html', {'books':books})       
+    return render(request, 'bibilio/book.html', {'books':books})
+
+def group(request):
+    group = Group.objects.all()
+
+    return render(request, 'bibilio/group.html', {'group':group})
+
+def forum(request):
+    forum = Forum.objects.all()
+
+    return render(request, 'bibilio/forum.html', {'forum':forum})
+
+def listGroup(request):
+    group = Group.objects.all()
+
+    return render(request, 'bibilio/listGroup.html', {'group':group})
+
+def deleteGroup(request):
+    id = request.GET.get('id', 'Not available')
+    get_object_or_404(Group, pk=id).delete()
+    return redirect('/group')
+
+
+def updateGroup(request):
+    id = request.GET.get('id', 'Not available')
+    group = Group.objects.get(pk=id)
+    if request.method == 'POST':
+        form = GroupForm(request.POST, request.FILES, instance=group)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/group')
+    else:
+        formGroup = GroupForm(instance=group)
+
+        return render(request, 'bibilio/updateGroup.html',
+                      {'form': formGroup})
+
+def home(request):
+    books = Book.objects.all()
+
+    return render(request, 'bibilio/home.html', {'books':books})           
 
 def gender(request):
     genders = Gender.objects.all()
@@ -141,4 +217,61 @@ def createGender(request):
             return redirect('/gender')
     else:
         form = GenderForm()
-        return render(request, 'bibilio/createGender.html',{'form':form})        
+        return render(request, 'bibilio/createGender.html',{'form':form}) 
+
+def deleteGender(request):
+    id=request.GET.get('id','Not available')
+    get_object_or_404(Gender, pk=id).delete()
+    return redirect('/gender')
+
+def updateGender(request):
+    id=request.GET.get('id','Not available')
+    gender = Gender.objects.get(pk=id)
+    if request.method == 'POST':
+        form = GenderForm(request.POST, instance=gender)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/gender')
+    else:
+        form = GenderForm(instance=gender)
+
+        return render(request, 'bibilio/updateGender.html',{'form':form})      
+
+def deleteEditor(request):
+    id=request.GET.get('id','Not available')
+    get_object_or_404(Editor, pk=id).delete()
+    return redirect('/editor')
+
+def updateEditor(request):
+    id=request.GET.get('id','Not available')
+    editor = Editor.objects.get(pk=id)
+    if request.method == 'POST':
+        form = GenderForm(request.POST, instance=editor)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/editor')
+    else:
+        form = EditorForm(instance=editor)
+
+        return render(request, 'bibilio/updateEditor.html',{'form':form})       
+
+def deleteAuthor(request):
+    id=request.GET.get('id','Not available')
+    get_object_or_404(Author, pk=id).delete()
+    return redirect('/author')
+
+def updateAuthor(request):
+    id=request.GET.get('id','Not available')
+    author = Author.objects.get(pk=id)
+    if request.method == 'POST':
+        form = AuthorForm(request.POST, instance=author)
+ 
+        if form.is_valid():
+            form.save()
+            return redirect('/author')
+    else:
+        form = AuthorForm(instance=author)
+
+        return render(request, 'bibilio/updateAuthor.html',{'form':form}) 

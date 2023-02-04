@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import signin,signout, home, book, createAuthor, author, editor, gender, createEditor, createGender, createBook, registration_views
+from django.conf import settings
+from django.conf.urls.static import static
+from .views import signin,signout, home, book, createAuthor, author, editor, gender, createEditor, createGender, createBook, registration_views, deleteBook, updateBook, deleteGender, updateGender, deleteEditor, updateEditor, deleteAuthor, updateAuthor, home, createGroup, group, deleteGroup, updateGroup, listGroup, forum
 
 urlpatterns = [
     path('home/', home),
@@ -24,6 +26,7 @@ urlpatterns = [
     path('signup/', registration_views, name ='signup'),
     path('signout/', signout, name = 'logout'),
     path('book/', book, name = 'book'),
+    path('home/', home, name = 'home'),
     path('createAuthor/', createAuthor, name = 'createAuthor'),
     path('author/', author, name = 'author'),
     path('editor/', editor, name = 'editor'),
@@ -31,4 +34,22 @@ urlpatterns = [
     path('createEditor/', createEditor, name = 'createEditor'),
     path('createGender/', createGender, name = 'createGender'),
     path('createBook/', createBook, name = 'createBook'),
+    path('book/delete/', deleteBook, name = 'deleteBook'),
+    path('book/update/', updateBook, name = 'updateBook'),
+    path('gender/delete/', deleteGender, name = 'deleteGender'),
+    path('gender/update/', updateGender, name = 'updateGender'),
+    path('editor/delete/', deleteEditor, name = 'deleteEditor'),
+    path('editor/update/', updateEditor, name = 'updateEditor'),
+    path('author/delete/', deleteAuthor, name = 'deleteAuthor'),
+    path('author/update/', updateAuthor, name = 'updateAuthor'),
+    path('createGroup/', createGroup, name = 'createGroup'),
+    path('group/', group, name = 'group'),
+    path('list-group/', listGroup, name = 'list-group'),
+    path('group/delete/', deleteGroup, name = 'deleteGroup'),
+    path('group/update/', updateGroup, name = 'updateGroup'),
+    path('forum/', forum, name='forum'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

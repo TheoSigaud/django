@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Liste des groupes</h1>
+
+<a class="btn btn-primary ms-3" href="/createGroup">Ajouter un groupe</a>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Date et heure</th>
+    </tr>
+    {% for item in group %}
+    <tr> 
+        <td>{{ item.name }}</td>
+        <td>{{ item.date_group }}</td>
+        <td>
+            <a href="zenn/?id={{ item.id }}">Rejoindre</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

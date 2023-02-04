@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from bibilio.models import Book, Author, Gender, Editor
+from bibilio.models import Book, Author, Gender, Editor, Group, Forum
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from bibilio.models import User
@@ -23,6 +23,17 @@ class BookForm(ModelForm):
     class Meta:
         model = Book
         fields = ['title', 'author', 'editor', 'gender', 'jacket']
+
+class GroupForm(ModelForm):
+    date_group = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
+    class Meta:
+        model = Group
+        fields = ['name', 'date_group']
+
+class ForumForm(ModelForm):
+    class Meta:
+        model = Forum
+        fields = ['title']
 
 class RegisterForm(UserCreationForm):
   first_name = forms.CharField(label='First name', max_length=100)

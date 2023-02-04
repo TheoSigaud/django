@@ -1,20 +1,23 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="container">
-    <h1>Liste des genres</h1>
 
-    <a class="btn btn-primary ms-3" href="/createGender">Ajouter un genre</a>
+<div class="container">
+    <h1>Liste des groupes</h1>
+
+    <a class="btn btn-primary ms-3" href="/createGroup">Ajouter un groupe</a>
 
     <table class="table table-striped">
       <thead>
         <tr>
             <th>Nom</th>
+            <th>Date et heure</th>
         </tr>
       </thead>
       <tbody>
-        {% for item in genders %}
+        {% for item in group %}
             <tr>
                 <td>{{ item.name }}</td>
+                <td>{{ item.date_group }}</td>
                 <td>
                     <a class="btn btn-primary" href="update/?id={{ item.id }}">Modifier</a>
                     <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a>
