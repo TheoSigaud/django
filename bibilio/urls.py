@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import signin,signout, home, book, createAuthor, author, editor, gender, createEditor, createGender, createBook, registration_views, deleteBook, updateBook, deleteGender, updateGender, deleteEditor, updateEditor, deleteAuthor, updateAuthor, home, createGroup, group
+from .views import signin,signout, home, book, createAuthor, author, editor, gender, createEditor, createGender, createBook, registration_views, deleteBook, updateBook, deleteGender, updateGender, deleteEditor, updateEditor, deleteAuthor, updateAuthor, home, createGroup, group, deleteGroup, updateGroup
 
 urlpatterns = [
     path('home/', home),
@@ -44,6 +44,8 @@ urlpatterns = [
     path('author/update/', updateAuthor, name = 'updateAuthor'),
     path('createGroup/', createGroup, name = 'createGroup'),
     path('group/', group, name = 'group'),
+    path('group/delete/', deleteGroup, name = 'deleteGroup'),
+    path('group/update/', updateGroup, name = 'updateGroup'),
 ]
 
 if settings.DEBUG:

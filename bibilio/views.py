@@ -148,6 +148,28 @@ def group(request):
 
     return render(request, 'bibilio/group.html', {'group':group})
 
+
+def deleteGroup(request):
+    id = request.GET.get('id', 'Not available')
+    get_object_or_404(Group, pk=id).delete()
+    return redirect('/group')
+
+
+def updateGroup(request):
+    id = request.GET.get('id', 'Not available')
+    group = Group.objects.get(pk=id)
+    if request.method == 'POST':
+        form = GroupForm(request.POST, request.FILES, instance=group)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/group')
+    else:
+        formGroup = GroupForm(instance=group)
+
+        return render(request, 'bibilio/updateGroup.html',
+                      {'form': formGroup})
+
 def home(request):
     books = Book.objects.all()
 

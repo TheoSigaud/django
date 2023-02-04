@@ -13,6 +13,10 @@
     <tr> 
         <td>{{ item.name }}</td>
         <td>{{ item.date_group }}</td>
+        <td>
+            <a href="update/?id={{ item.id }}">Modifier</a>
+            <a href="delete/?id={{ item.id }}">Supprimer</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
