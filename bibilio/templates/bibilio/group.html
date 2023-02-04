@@ -1,4 +1,8 @@
+{% extends 'base.html' %} {% block content %}
+
 <h1>Liste des groupes</h1>
+
+<a class="btn btn-primary ms-3" href="/createGroup">Ajouter un groupe</a>
 
 <table>
     <tr>
@@ -10,3 +14,5 @@
     </tr>
     {% endfor %}
 </table>
+
+{% endblock content %}

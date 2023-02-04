@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm
 from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm
-from bibilio.models import Book, Author, Gender, Editor
+from bibilio.models import Book, Author, Gender, Editor, Group
 from django.contrib.auth.forms import AuthenticationForm, authenticate
 from .forms import RegisterForm
 from .models import Profile, User
@@ -90,10 +90,10 @@ def createGroup(request):
         if form.is_valid():
             
             form.save()
-        return redirect('/book')
+        return redirect('/group')
     else:
         form = GroupForm()
-        return render(request, 'bibilio/createBook.html',{'form':form})              
+        return render(request, 'bibilio/createGroup.html',{'form':form})
 
 def deleteBook(request):
     id=request.GET.get('id','Not available')
@@ -141,7 +141,12 @@ def editor(request):
 def book(request):
     books = Book.objects.all()
 
-    return render(request, 'bibilio/book.html', {'books':books}) 
+    return render(request, 'bibilio/book.html', {'books':books})
+
+def group(request):
+    group = Group.objects.all()
+
+    return render(request, 'bibilio/group.html', {'group':group})
 
 def home(request):
     books = Book.objects.all()
