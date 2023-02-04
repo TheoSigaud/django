@@ -1,18 +1,24 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Forum</h1>
+<div class="container">
+    <h1>Forum</h1>
 
-<a class="btn btn-primary ms-3" href="/createForum">Ajouter une catégorie</a>
+    <a class="btn btn-primary ms-3" href="/createForum">Ajouter une catégorie</a>
 
-<table>
-    <tr>
-        <th>Titre</th>
-    </tr>
-    {% for item in forum %}
-    <tr> 
-        <td>{{ item.title }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>Titre</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in forum %}
+            <tr>
+                <td>{{ item.title }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
 
 {% endblock content %}

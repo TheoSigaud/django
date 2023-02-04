@@ -1,31 +1,37 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Liste des livres</h1>
+<div class="container">
+    <h1>Liste des livres</h1>
 
-<a class="btn btn-primary ms-3" href="/createBook">Ajouter un livre</a>
+    <a class="btn btn-primary ms-3" href="/createBook">Ajouter un livre</a>
 
-<table>
-    <tr>
-        <th>Titre</th>
-        <th>Auteur</th>
-        <th>Editeur</th>
-        <th>gender</th>
-    </tr>
-    {% for item in books %}
-    <tr> 
-        <td>{{ item.title }}</td>
-        <td>{{ item.author }}</td>
-        <td>{{ item.editor }}</td>
-        <td>{{ item.gender }}</td>
-        <td>
-            <img src="{{ item.jacket.url}}" alt="connect" style="max-height:300px">
-        </td>
-        <td>
-            <a href="update/?id={{ item.id }}">Modifier</a>
-            <a href="delete/?id={{ item.id }}">Supprimer</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Editeur</th>
+            <th>gender</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in books %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.author }}</td>
+                <td>{{ item.editor }}</td>
+                <td>{{ item.gender }}</td>
+                <td>
+                    <img src="{{ item.jacket.url}}" alt="connect" style="max-height:300px">
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="update/?id={{ item.id }}">Modifier</a>
+                    <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
 
 {% endblock content %}

@@ -1,24 +1,29 @@
 {% extends 'base.html' %} {% block content %}
+<div class="container">
+    <h1>Liste des auteurs</h1>
 
-<h1>Liste des auteurs</h1>
+    <a class="btn btn-primary ms-3" href="/createAuthor">Ajouter un auteur</a>
 
-<a class="btn btn-primary ms-3" href="/createAuthor">Ajouter un auteur</a>
-
-<table>
-    <tr>
-        <th>Prénom</th>
-        <th>Nom</th>
-    </tr>
-    {% for item in authors %}
-    <tr> 
-        <td>{{ item.firstname }}</td>
-        <td>{{ item.name }}</td>
-        <td>
-            <a href="update/?id={{ item.id }}">Modifier</a>
-            <a href="delete/?id={{ item.id }}">Supprimer</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Prénom</th>
+          <th>Nom</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in authors %}
+        <tr>
+            <td>{{ item.firstname }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+                <a class="btn btn-primary" href="update/?id={{ item.id }}">Modifier</a>
+                <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
 
 {% endblock content %}
