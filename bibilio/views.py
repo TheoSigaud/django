@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm
-from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm
-from bibilio.models import Book, Author, Gender, Editor, Group
+from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm, ForumForm
+from bibilio.models import Book, Author, Gender, Editor, Group, Forum
 from django.contrib.auth.forms import AuthenticationForm, authenticate
 from .forms import RegisterForm
 from .models import Profile, User
@@ -148,6 +148,15 @@ def group(request):
 
     return render(request, 'bibilio/group.html', {'group':group})
 
+def forum(request):
+    forum = Forum.objects.all()
+
+    return render(request, 'bibilio/forum.html', {'forum':forum})
+
+def listGroup(request):
+    group = Group.objects.all()
+
+    return render(request, 'bibilio/listGroup.html', {'group':group})
 
 def deleteGroup(request):
     id = request.GET.get('id', 'Not available')
