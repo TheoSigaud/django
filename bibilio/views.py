@@ -85,7 +85,7 @@ def createBook(request):
 
 def createGroup(request):
     if request.method == 'POST':
-        form = (request.POST)
+        form = GroupForm(request.POST)
 
         if form.is_valid():
             

@@ -25,9 +25,10 @@ class BookForm(ModelForm):
         fields = ['title', 'author', 'editor', 'gender', 'jacket']
 
 class GroupForm(ModelForm):
+    date_group = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
     class Meta:
         model = Group
-        fields = ['name']        
+        fields = ['name', 'date_group']
 
 class RegisterForm(UserCreationForm):
   first_name = forms.CharField(label='First name', max_length=100)

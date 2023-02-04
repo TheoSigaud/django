@@ -50,6 +50,7 @@ class Book(models.Model):
 class Group(models.Model):
     profile = models.ManyToManyField(Profile)
     name = models.CharField(max_length=255)
+    date_group = models.DateTimeField()
 
 class Session(models.Model):
     date = models.DateTimeField()

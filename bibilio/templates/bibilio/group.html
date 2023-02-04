@@ -7,10 +7,12 @@
 <table>
     <tr>
         <th>Name</th>
+        <th>Date et heure</th>
     </tr>
-    {% for item in groups %}
+    {% for item in group %}
     <tr> 
         <td>{{ item.name }}</td>
+        <td>{{ item.date_group }}</td>
     </tr>
     {% endfor %}
 </table>
