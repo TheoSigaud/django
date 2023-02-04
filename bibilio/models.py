@@ -47,12 +47,13 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
 
+class Group(models.Model):
+    profile = models.ManyToManyField(Profile)
+    name = models.CharField(max_length=255)
+
 class Session(models.Model):
     date = models.DateTimeField()
-
-class Group(models.Model):
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    profile = models.ManyToManyField(Profile)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
     
 class Loan(models.Model):
     book = models.ManyToManyField(Book)

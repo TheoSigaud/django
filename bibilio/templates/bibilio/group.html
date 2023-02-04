@@ -1,0 +1,12 @@
+<h1>Liste des groupes</h1>
+
+<table>
+    <tr>
+        <th>Name</th>
+    </tr>
+    {% for item in groups %}
+    <tr> 
+        <td>{{ item.name }}</td>
+    </tr>
+    {% endfor %}
+</table>
