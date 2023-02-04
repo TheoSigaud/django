@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm
-from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm
+from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm
 from bibilio.models import Book, Author, Gender, Editor
 from django.contrib.auth.forms import AuthenticationForm, authenticate
 from .forms import RegisterForm
@@ -81,7 +81,19 @@ def createBook(request):
         formAuthor = AuthorForm()
         formGender = GenderForm()
         formEditor = EditorForm()
-        return render(request, 'bibilio/createBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})    
+        return render(request, 'bibilio/createBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})  
+
+def createGroup(request):
+    if request.method == 'POST':
+        form = (request.POST)
+
+        if form.is_valid():
+            
+            form.save()
+        return redirect('/book')
+    else:
+        form = GroupForm()
+        return render(request, 'bibilio/createBook.html',{'form':form})              
 
 def deleteBook(request):
     id=request.GET.get('id','Not available')
