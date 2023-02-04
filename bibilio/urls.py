@@ -22,7 +22,7 @@ from .views import signin,signout, home, book, createAuthor, author, editor, gen
 urlpatterns = [
     path('home/', home),
     path('admin/', admin.site.urls),
-    path('login/', signin, name='login'),
+    path('', signin, name='login'),
     path('signup/', registration_views, name ='signup'),
     path('signout/', signout, name = 'logout'),
     path('book/', book, name = 'book'),

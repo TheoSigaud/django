@@ -42,7 +42,8 @@ class RegisterForm(UserCreationForm):
   adress = forms.CharField(label='Adress', max_length=100)
   city = forms.CharField(label='City', max_length=100)
   zipCode = forms.CharField(label='Zip code', max_length=100)
-
+  #is staff radio button
+  is_staff = forms.BooleanField(label='Je suis libraire ', required=False)
   class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'adress', 'city', 'zipCode', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'adress', 'city', 'zipCode', 'password1', 'password2', 'is_staff')
