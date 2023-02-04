@@ -1,22 +1,28 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Liste des genres</h1>
+<div class="container">
+    <h1>Liste des genres</h1>
 
-<a class="btn btn-primary ms-3" href="/createGender">Ajouter un genre</a>
+    <a class="btn btn-primary ms-3" href="/createGender">Ajouter un genre</a>
 
-<table>
-    <tr>
-        <th>Nom</th>
-    </tr>
-    {% for item in genders %}
-    <tr> 
-        <td>{{ item.name }}</td>
-        <td>
-            <a href="update/?id={{ item.id }}">Modifier</a>
-            <a href="delete/?id={{ item.id }}">Supprimer</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>Nom</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in genders %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>
+                    <a class="btn btn-primary" href="update/?id={{ item.id }}">Modifier</a>
+                    <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
 
 {% endblock content %}
