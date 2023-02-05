@@ -158,6 +158,7 @@ def group(request):
 
 def forum(request):
     forum = Forum.objects.all()
+    print(request.user.id)
 
     return render(request, 'bibilio/forum.html', {'forum':forum})
 
@@ -207,6 +208,17 @@ def createEditor(request):
     else:
         form = EditorForm()
         return render(request, 'bibilio/createEditor.html',{'form':form})
+
+def createForum(request):
+    if request.method == 'POST':
+        form = ForumForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/forum')
+    else:
+        form = ForumForm()
+        return render(request, 'bibilio/createForum.html',{'form':form})
 
 def createGender(request):
     if request.method == 'POST':
