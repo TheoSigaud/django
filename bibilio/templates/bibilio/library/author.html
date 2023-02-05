@@ -1,0 +1,29 @@
+{% extends 'baseLibrary.html' %} {% block content %}
+<div class="container">
+    <h1>Liste des auteurs</h1>
+
+    <a class="btn btn-primary ms-3" href="/library/author/createAuthor">Ajouter un auteur</a>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Prénom</th>
+          <th>Nomd</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in authors %}
+        <tr>
+            <td>{{ item.firstname }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+                <a class="btn btn-primary" href="update/?id={{ item.id }}">Modifier</a>
+                <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endblock content %}

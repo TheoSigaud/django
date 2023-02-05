@@ -51,6 +51,7 @@ urlpatterns = [
     path('loanBook/', loanBook, name='loanBook'),
     path('loanBook/create', createLoanBook, name='createLoanBook'),
     path('book/', book, name = 'book'),
+    path('library/loanBook', loanBook, name = 'loanBook'),
 ]
 
 if settings.DEBUG:

@@ -62,7 +62,7 @@ def signin(request):
             #get user profile
             profile = Profile.objects.get(user=user)
             if profile.is_staff == 1:
-                return redirect('/library')
+                return redirect('/library/book')
             else:
                 return redirect('/home')
         else:
@@ -138,19 +138,36 @@ def createAuthor(request):
 
 def author(request):
     authors = Author.objects.all()
-
-    return render(request, 'bibilio/author.html', {'authors':authors})          
+    user = request.user
+    #get user profile
+    profile = Profile.objects.get(user=user)
+    if profile.is_staff == 1:
+        return render(request, 'bibilio/library/author.html', {'authors':authors})  
+    else:
+        return render(request, 'bibilio/author.html', {'authors':authors})  
+            
 
 def editor(request):
     editors = Editor.objects.all()
+    user = request.user
+    #get user profile
+    profile = Profile.objects.get(user=user)
+    if profile.is_staff == 1:
+        return render(request, 'bibilio/library/editor.html', {'editors':editors})
+    else:
+        return render(request, 'bibilio/editor.html', {'editors':editors})
 
-    return render(request, 'bibilio/editor.html', {'editors':editors})
 
 def book(request):
     if request.user.is_authenticated:
         books = Book.objects.all()
-
-        return render(request, 'bibilio/book.html', {'books':books})        
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            return render(request, 'bibilio/library/book.html', {'books':books})  
+        else:
+            return render(request, 'bibilio/book.html', {'books':books})  
     else:
         return redirect('/')
 
@@ -207,8 +224,15 @@ def home(request):
 
 def gender(request):
     genders = Gender.objects.all()
-
-    return render(request, 'bibilio/gender.html', {'genders':genders})         
+    user = request.user
+    #get user profile
+    profile = Profile.objects.get(user=user)
+    if profile.is_staff == 1:
+        return render(request, 'bibilio/library/gender.html', {'genders':genders})         
+    else:
+        return render(request, 'bibilio/gender.html', {'genders':genders})         
+            
+    
 
 def createEditor(request):
     if request.method == 'POST':
@@ -292,13 +316,14 @@ def updateAuthor(request):
 def loanBook(request):
     #Get all Loan by profile
     if request.user.is_authenticated:
-        
-        
         user = request.user
         profile = Profile.objects.get(user=user)
-        loan = Loan.objects.filter(profile=profile)
-
-        return render(request, 'bibilio/loanBook.html', {'loanBook':loan})  
+        if profile.is_staff == 1:
+            loan = Loan.objects.all()
+            return render(request, 'bibilio/library/loanBook.html', {'loanBook':loan})  
+        else:
+            loan = Loan.objects.filter(profile=profile)
+            return render(request, 'bibilio/loanBook.html', {'loanBook':loan})  
     else:
         return redirect('/')
 
