@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from bibilio.models import Book, Author, Gender, Editor, Group, Forum
+from bibilio.models import Book, Author, Gender, Editor, Group, Forum, Message
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from bibilio.models import User
@@ -34,6 +34,11 @@ class ForumForm(ModelForm):
     class Meta:
         model = Forum
         fields = ['title']
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = ['content']
 
 class RegisterForm(UserCreationForm):
   first_name = forms.CharField(label='First name', max_length=100)
