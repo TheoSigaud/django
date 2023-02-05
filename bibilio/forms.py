@@ -38,7 +38,7 @@ class ForumForm(ModelForm):
 class MessageForm(ModelForm):
     class Meta:
         model = Message
-        fields = ['content', 'author']
+        fields = ['content']
 
 class RegisterForm(UserCreationForm):
   first_name = forms.CharField(label='First name', max_length=100)

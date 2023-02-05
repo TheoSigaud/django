@@ -1,9 +1,10 @@
 {% extends 'base.html' %} {% block content %}
 
 <div class="container">
-    <h1>Forum</h1>
-
-    <a class="btn btn-primary ms-3" href="/createForum">Poster un message</a>
+    {% for item in forum %}
+        <h1>{{ item.title }}</h1>
+        <a class="btn btn-primary ms-3" href="/createMessage/?id={{ item.id }}">Poster un message</a>
+    {% endfor %}
 
     <table class="table table-striped">
       <thead>
@@ -13,10 +14,11 @@
         </tr>
       </thead>
       <tbody>
-        {% for item in forum %}
+        {% for item in messages %}
             <tr>
                 <td>{{ item.content }}</td>
                 <td>{{ item.author.firstname }}</td>
+                <td>{{ item.creation_date }}</td>
                 <td>
                     <a class="btn btn-primary">Voir</a>
                 </td>

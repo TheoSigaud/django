@@ -61,6 +61,7 @@ class Message(models.Model):
     content = models.TextField()
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    creation_date = models.DateTimeField(auto_now_add=True)
 
 class Session(models.Model):
     date = models.DateTimeField()

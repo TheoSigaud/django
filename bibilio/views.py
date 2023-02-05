@@ -191,14 +191,15 @@ def messageForum(request):
     id = request.GET.get('id', None)
 
     if id:
-        if not Forum.objects.filter(pk=id).exists():
+        forum = Forum.objects.filter(pk=id)
+        if not forum.exists():
             return redirect('/forum')
 
         messages = Message.objects.filter(forum__id=id)
     else:
         return redirect('/forum')
 
-    return render(request, 'bibilio/messageForum.html', {'messages': messages})
+    return render(request, 'bibilio/messageForum.html', {'messages': messages, 'forum': forum})
 
 def home(request):
     books = Book.objects.all()
@@ -220,6 +221,17 @@ def createEditor(request):
     else:
         form = EditorForm()
         return render(request, 'bibilio/createEditor.html',{'form':form})
+
+def createMessage(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/forum')
+    else:
+        form = MessageForm()
+        return render(request, 'bibilio/createMessage.html',{'form':form})
 
 def createForum(request):
     if request.method == 'POST':
