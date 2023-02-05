@@ -158,7 +158,6 @@ def group(request):
 
 def forum(request):
     forum = Forum.objects.all()
-    print(request.user.id)
 
     return render(request, 'bibilio/forum.html', {'forum':forum})
 
@@ -214,7 +213,10 @@ def createForum(request):
         form = ForumForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            forum = form.save(commit=False)
+            forum.creator = profile
+            forum.save()
             return redirect('/forum')
     else:
         form = ForumForm()

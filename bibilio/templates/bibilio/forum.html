@@ -9,12 +9,14 @@
       <thead>
         <tr>
             <th>Titre</th>
+            <th>Utilisateur</th>
         </tr>
       </thead>
       <tbody>
         {% for item in forum %}
             <tr>
                 <td>{{ item.title }}</td>
+                <td>{{ item.creator.firstname }}</td>
             </tr>
         {% endfor %}
       </tbody>
