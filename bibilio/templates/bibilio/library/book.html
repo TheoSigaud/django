@@ -3,7 +3,7 @@
 <div class="container">
     <h1>Liste des livres</h1>
 
-    <!-- <a class="btn btn-primary ms-3" href="/library/book/createBook">Ajouter un livre</a> -->
+    <a class="btn btn-primary ms-3" href="/library/book/createBook">Ajouter un livre</a>
 
     <table class="table table-striped">
       <thead>
@@ -25,8 +25,8 @@
                     <img src="{{ item.jacket.url}}" alt="connect" style="max-height:300px">
                 </td>
                 <td>
-                    <a class="btn btn-primary" href="/loanBook/create?id={{ item.id }}">Emprunter Le livre</a>
-                    <!-- <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a> -->
+                    <a class="btn btn-primary" href="update/?id={{ item.id }}">Modifier</a>
+                    <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a>
                 </td>
             </tr>
         {% endfor %}

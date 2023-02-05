@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from bibilio.models import Book, Author, Gender, Editor, Group, Forum
+from bibilio.models import Book, Author, Gender, Editor, Group, Forum, Loan
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from bibilio.models import User
@@ -47,3 +47,12 @@ class RegisterForm(UserCreationForm):
   class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'adress', 'city', 'zipCode', 'password1', 'password2', 'is_staff')
+
+
+class LoanForm(ModelForm):
+    #profile get the current user
+    
+    date_end = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}), label="Date de retour")
+    class Meta:
+        model = Loan
+        fields = ['date_end', 'book', 'borrowed']
