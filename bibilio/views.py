@@ -223,12 +223,21 @@ def createEditor(request):
         return render(request, 'bibilio/createEditor.html',{'form':form})
 
 def createMessage(request):
+    forum_id = request.GET.get('id')
+    forum = Forum.objects.filter(pk=forum_id)
+    if not forum.exists():
+        return redirect('/forum')
+
     if request.method == 'POST':
         form = MessageForm(request.POST)
 
         if form.is_valid():
-            form.save()
-            return redirect('/forum')
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            message = form.save(commit=False)
+            message.forum = Forum.objects.get(id=forum_id)
+            message.author = profile
+            message.save()
+            return redirect('/forum/messageForum/?id='+forum_id)
     else:
         form = MessageForm()
         return render(request, 'bibilio/createMessage.html',{'form':form})
