@@ -17,7 +17,11 @@
                 <td>{{ item.name }}</td>
                 <td>{{ item.date_group }}</td>
                 <td>
-                    <a class="btn btn-primary" href="/joinGroup/?id={{ item.id }}">Rejoindre</a>
+                    {% if item not in profile.group_set.all %}
+                        <a class="btn btn-primary" href="/joinGroup/?id={{ item.id }}">Rejoindre</a>
+                    {% else %}
+                        <a class="btn btn-danger" href="/leaveGroup/?id={{ item.id }}">Quitter</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

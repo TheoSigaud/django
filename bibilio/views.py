@@ -163,8 +163,24 @@ def forum(request):
 
 def listGroup(request):
     group = Group.objects.all()
+    profile, created = Profile.objects.get_or_create(user=request.user)
 
-    return render(request, 'bibilio/listGroup.html', {'group': group})
+    return render(request, 'bibilio/listGroup.html', {'group': group, 'profile': profile})
+
+def leaveGroup(request):
+    id = request.GET.get('id')
+    group = Group.objects.filter(pk=id).first()
+    profile = request.user.profile
+
+    if id:
+        group = Group.objects.filter(pk=id)
+        if not group.exists():
+            return redirect('/listGroup')
+        if group and profile:
+            profile.group_set.remove(id)
+            return redirect('/listGroup')
+    else:
+        return redirect('/listGroup')
 
 def joinGroup(request):
     id = request.GET.get('id', None)
