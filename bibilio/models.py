@@ -55,12 +55,12 @@ class Group(models.Model):
 
 class Forum(models.Model):
     title = models.CharField(max_length=255)
-    creator = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
 class Message(models.Model):
     content = models.TextField()
-    forum = models.OneToOneField(Forum, on_delete=models.CASCADE)
-    author = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    forum = models.ForeignKey(Forum, on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
 class Session(models.Model):
     date = models.DateTimeField()

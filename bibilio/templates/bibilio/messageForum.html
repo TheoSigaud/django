@@ -3,22 +3,22 @@
 <div class="container">
     <h1>Forum</h1>
 
-    <a class="btn btn-primary ms-3" href="/createForum">Ajouter une catégorie</a>
+    <a class="btn btn-primary ms-3" href="/createForum">Poster un message</a>
 
     <table class="table table-striped">
       <thead>
         <tr>
-            <th>Titre</th>
-            <th>Utilisateur</th>
+            <th>Message</th>
+            <th>Auteur</th>
         </tr>
       </thead>
       <tbody>
         {% for item in forum %}
             <tr>
-                <td>{{ item.title }}</td>
-                <td>{{ item.creator.firstname }}</td>
+                <td>{{ item.content }}</td>
+                <td>{{ item.author.firstname }}</td>
                 <td>
-                    <a class="btn btn-primary" href="messageForum/?id={{ item.id }}">Voir</a>
+                    <a class="btn btn-primary">Voir</a>
                 </td>
             </tr>
         {% endfor %}

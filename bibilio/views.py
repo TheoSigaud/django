@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm
-from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm, ForumForm
-from bibilio.models import Book, Author, Gender, Editor, Group, Forum
+from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm, ForumForm, MessageForm
+from bibilio.models import Book, Author, Gender, Editor, Group, Forum, Message
 from django.contrib.auth.forms import AuthenticationForm, authenticate
 from .forms import RegisterForm
 from .models import Profile, User
@@ -186,6 +186,19 @@ def updateGroup(request):
 
         return render(request, 'bibilio/updateGroup.html',
                       {'form': formGroup})
+
+def messageForum(request):
+    id = request.GET.get('id', None)
+
+    if id:
+        if not Forum.objects.filter(pk=id).exists():
+            return redirect('/forum')
+
+        messages = Message.objects.filter(forum__id=id)
+    else:
+        return redirect('/forum')
+
+    return render(request, 'bibilio/messageForum.html', {'messages': messages})
 
 def home(request):
     books = Book.objects.all()
