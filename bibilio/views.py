@@ -167,7 +167,18 @@ def book(request):
         if profile.is_staff == 1:
             return render(request, 'bibilio/library/book.html', {'books':books})  
         else:
-            return render(request, 'bibilio/book.html', {'books':books})  
+            title = request.GET.get('title')
+            editor_id = request.GET.get('editor')
+            gender_id = request.GET.get('gender')
+            if gender_id:
+                books = books.filter(gender_id=gender_id)
+            if title:
+                books = books.filter(title__icontains=title)
+            if editor_id:
+                books = books.filter(editor_id=editor_id)
+            editors = Editor.objects.all()
+            genders = Gender.objects.all()
+            return render(request, 'bibilio/book.html', {'books':books, 'editors':editors, 'genders':genders})  
     else:
         return redirect('/')
 
@@ -337,8 +348,16 @@ def createLoanBook(request):
             user = request.user
             profile = Profile.objects.get(user=user)
             form.instance.profile = profile
+            form.instance.borrowed = 1
             form.save()
-            return redirect('/book')
+            form.instance.book.set([book])
+            return redirect('/loanBook')
     else:
-        form = LoanForm(initial={'book': book})
+        form = LoanForm()
         return render(request, 'bibilio/loanBookCreate.html', {'form':form})
+
+def deleteLoanBook(request, loan_id):
+    loan = get_object_or_404(Loan, pk=loan_id)
+    loan.borrowed = 0
+    loan.save()
+    return redirect('/loanBook')

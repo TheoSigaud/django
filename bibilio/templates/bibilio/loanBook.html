@@ -18,8 +18,11 @@
                 <td>{{ item.date_end }}</td>
                 <td>{{ item.borrowed }}</td>
                 <td>
-                    <a class="btn btn-primary" href="update/?id={{ item.id }}">Rendre le livre</a>
-                    <!-- <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a> -->
+                  {% if item.borrowed == True %}
+                    <a href="{% url 'deleteLoanBook' item.id %}" class="btn btn-primary">Rendre le livre</a>
+                  {% else %}
+                    <button class="btn btn-primary" disabled>Livre rendu</button>
+                  {% endif %}
                 </td>
             </tr>
         {% endfor %}

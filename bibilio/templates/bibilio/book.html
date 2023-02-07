@@ -4,7 +4,22 @@
     <h1>Liste des livres</h1>
 
     <!-- <a class="btn btn-primary ms-3" href="/library/book/createBook">Ajouter un livre</a> -->
-
+    <form method="get">
+      <input name="title" type="text" placeholder="Titre">
+      <select name="gender">
+        <option value="">Tous les genres</option>
+        {% for gender in genders %}
+          <option value="{{ gender.id }}" {% if gender.id == gender_id %}selected{% endif %}>{{ gender.name }}</option>
+        {% endfor %}
+      </select>
+      <select name="editor">
+        <option value="">Tous les éditeurs</option>
+        {% for editor in editors %}
+          <option value="{{ editor.id }}" {% if editor.id == editor_id %}selected{% endif %}>{{ editor.name }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Filtrer</button>
+    </form>
     <table class="table table-striped">
       <thead>
         <tr>

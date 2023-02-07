@@ -51,8 +51,8 @@ class RegisterForm(UserCreationForm):
 
 class LoanForm(ModelForm):
     #profile get the current user
-    
+    #book hidden
     date_end = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}), label="Date de retour")
     class Meta:
         model = Loan
-        fields = ['date_end', 'book', 'borrowed']
+        fields = ['date_end']
