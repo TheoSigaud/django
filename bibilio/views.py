@@ -78,30 +78,50 @@ def signout(request):
     return redirect('/home/')
 
 def createBook(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST, request.FILES)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            if request.method == 'POST':
+                form = BookForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            form.save()
-        return redirect('/book')
+                if form.is_valid():
+                    form.save()
+                return redirect('/book')
+            else:
+                formBook = BookForm()
+                formAuthor = AuthorForm()
+                formGender = GenderForm()
+                formEditor = EditorForm()
+                return render(request, 'bibilio/createBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})  
+        else:
+            return redirect('/login')
     else:
-        formBook = BookForm()
-        formAuthor = AuthorForm()
-        formGender = GenderForm()
-        formEditor = EditorForm()
-        return render(request, 'bibilio/createBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})  
+        return redirect('/login')
 
 def createGroup(request):
-    if request.method == 'POST':
-        form = GroupForm(request.POST)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            if request.method == 'POST':
+                form = GroupForm(request.POST)
 
-        if form.is_valid():
-            
-            form.save()
-        return redirect('/group')
+                if form.is_valid():
+                    
+                    form.save()
+                return redirect('/group')
+            else:
+                form = GroupForm()
+                return render(request, 'bibilio/createGroup.html',{'form':form})
+        else:
+            return redirect('/login')
     else:
-        form = GroupForm()
-        return render(request, 'bibilio/createGroup.html',{'form':form})
+        return redirect('/login')
 
 def deleteBook(request):
     id=request.GET.get('id','Not available')
@@ -109,53 +129,87 @@ def deleteBook(request):
     return redirect('/book')
 
 def updateBook(request):
-    id=request.GET.get('id','Not available')
-    book = Book.objects.get(pk=id)
-    if request.method == 'POST':
-        form = BookForm(request.POST, request.FILES, instance=book)
- 
-        if form.is_valid():
-            form.save()
-            return redirect('/library/book')
-    else:
-        formAuthor = AuthorForm()
-        formGender = GenderForm()
-        formEditor = EditorForm()
-        formBook = BookForm(instance=book)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            id=request.GET.get('id','Not available')
+            book = Book.objects.get(pk=id)
+            if request.method == 'POST':
+                form = BookForm(request.POST, request.FILES, instance=book)
+        
+                if form.is_valid():
+                    form.save()
+                    return redirect('/library/book')
+            else:
+                formAuthor = AuthorForm()
+                formGender = GenderForm()
+                formEditor = EditorForm()
+                formBook = BookForm(instance=book)
 
-        return render(request, 'bibilio/updateBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})      
+                return render(request, 'bibilio/updateBook.html',{'formBook':formBook, 'formAuthor':formAuthor, 'formGender':formGender, 'formEditor':formEditor})      
+        else:
+            return redirect('/login')
+    else:
+        return redirect('/login')
 
 def createAuthor(request):
-    if request.method == 'POST':
-        form = AuthorForm(request.POST)
- 
-        if form.is_valid():
-            form.save()
-            return redirect('/library/author')
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            if request.method == 'POST':
+                form = AuthorForm(request.POST)
+        
+                if form.is_valid():
+                    form.save()
+                    return redirect('/library/author')
+            else:
+                form = AuthorForm()
+                return render(request, 'bibilio/createAuthor.html',{'form':form})     
+        else:
+            return redirect('/login')
     else:
-        form = AuthorForm()
-        return render(request, 'bibilio/createAuthor.html',{'form':form})     
+        return redirect('/login')
 
 def author(request):
-    authors = Author.objects.all()
-    user = request.user
-    #get user profile
-    profile = Profile.objects.get(user=user)
-    if profile.is_staff == 1:
-        return render(request, 'bibilio/library/author.html', {'authors':authors})  
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            authors = Author.objects.all()
+            user = request.user
+            #get user profile
+            profile = Profile.objects.get(user=user)
+            if profile.is_staff == 1:
+                return render(request, 'bibilio/library/author.html', {'authors':authors})  
+            else:
+                return render(request, 'bibilio/author.html', {'authors':authors})  
+        else:
+            return redirect('/login')
     else:
-        return render(request, 'bibilio/author.html', {'authors':authors})  
+        return redirect('/login')
             
 
 def editor(request):
-    editors = Editor.objects.all()
-    user = request.user
+    
     #get user profile
-    profile = Profile.objects.get(user=user)
-    if profile.is_staff == 1:
-        return render(request, 'bibilio/library/editor.html', {'editors':editors})
+    if request.user.is_authenticated:
+        editors = Editor.objects.all()
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            return render(request, 'bibilio/library/editor.html', {'editors':editors})
+        else:
+            return render(request, 'bibilio/editor.html', {'editors':editors})
     else:
-        return render(request, 'bibilio/editor.html', {'editors':editors})
+        return redirect('/login')
 
 
 def book(request):
@@ -183,19 +237,46 @@ def book(request):
         return redirect('/')
 
 def group(request):
-    group = Group.objects.all()
-
-    return render(request, 'bibilio/group.html', {'group':group})
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            group = Group.objects.all()
+            return render(request, 'bibilio/group.html', {'group':group})
+        else:
+            return redirect('/login')
+    else:
+        return redirect('/login')
 
 def forum(request):
-    forum = Forum.objects.all()
-
-    return render(request, 'bibilio/forum.html', {'forum':forum})
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            forum = Forum.objects.all()
+            return render(request, 'bibilio/forum.html', {'forum':forum})
+        else:
+            return redirect('/login')
+    else:
+        return redirect('/login')
 
 def listGroup(request):
-    group = Group.objects.all()
-
-    return render(request, 'bibilio/listGroup.html', {'group':group})
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            group = Group.objects.all()
+            return render(request, 'bibilio/listGroup.html', {'group':group})
+        else:
+            return redirect('/login')
+    else:
+        return redirect('/login')
 
 def deleteGroup(request):
     id = request.GET.get('id', 'Not available')
@@ -204,19 +285,29 @@ def deleteGroup(request):
 
 
 def updateGroup(request):
-    id = request.GET.get('id', 'Not available')
-    group = Group.objects.get(pk=id)
-    if request.method == 'POST':
-        form = GroupForm(request.POST, request.FILES, instance=group)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            id = request.GET.get('id', 'Not available')
+            group = Group.objects.get(pk=id)
+            if request.method == 'POST':
+                form = GroupForm(request.POST, request.FILES, instance=group)
 
-        if form.is_valid():
-            form.save()
-            return redirect('/group')
+                if form.is_valid():
+                    form.save()
+                    return redirect('/group')
+            else:
+                formGroup = GroupForm(instance=group)
+
+                return render(request, 'bibilio/updateGroup.html',
+                            {'form': formGroup})
+        else:
+            return redirect('/login')
     else:
-        formGroup = GroupForm(instance=group)
-
-        return render(request, 'bibilio/updateGroup.html',
-                      {'form': formGroup})
+        return redirect('/login')
 
 def home(request):
     if request.user.is_authenticated:
@@ -234,38 +325,60 @@ def home(request):
     
 
 def gender(request):
-    genders = Gender.objects.all()
-    user = request.user
-    #get user profile
-    profile = Profile.objects.get(user=user)
-    if profile.is_staff == 1:
-        return render(request, 'bibilio/library/gender.html', {'genders':genders})         
+    if request.user.is_authenticated:
+        genders = Gender.objects.all()
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            return render(request, 'bibilio/library/gender.html', {'genders':genders})         
+        else:
+            return render(request, 'bibilio/gender.html', {'genders':genders})         
     else:
-        return render(request, 'bibilio/gender.html', {'genders':genders})         
-            
+        return redirect('/login')
     
 
 def createEditor(request):
-    if request.method == 'POST':
-        form = EditorForm(request.POST)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            if request.method == 'POST':
+                form = EditorForm(request.POST)
 
-        if form.is_valid():
-            form.save()
-            return redirect('/library/editor')
+                if form.is_valid():
+                    form.save()
+                    return redirect('/library/editor')
+            else:
+                form = EditorForm()
+                return render(request, 'bibilio/createEditor.html',{'form':form})
+        else:
+            return redirect('/login')
     else:
-        form = EditorForm()
-        return render(request, 'bibilio/createEditor.html',{'form':form})
+        return redirect('/login')
 
 def createGender(request):
-    if request.method == 'POST':
-        form = GenderForm(request.POST)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            if request.method == 'POST':
+                form = GenderForm(request.POST)
 
-        if form.is_valid():
-            form.save()
-            return redirect('/library/gender')
+                if form.is_valid():
+                    form.save()
+                    return redirect('/library/gender')
+            else:
+                form = GenderForm()
+                return render(request, 'bibilio/createGender.html',{'form':form}) 
+        else:
+            return redirect('/login')
     else:
-        form = GenderForm()
-        return render(request, 'bibilio/createGender.html',{'form':form}) 
+        return redirect('/login')
 
 def deleteGender(request):
     id=request.GET.get('id','Not available')
@@ -273,18 +386,28 @@ def deleteGender(request):
     return redirect('/library/gender')
 
 def updateGender(request):
-    id=request.GET.get('id','Not available')
-    gender = Gender.objects.get(pk=id)
-    if request.method == 'POST':
-        form = GenderForm(request.POST, instance=gender)
- 
-        if form.is_valid():
-            form.save()
-            return redirect('/library/gender')
-    else:
-        form = GenderForm(instance=gender)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            id=request.GET.get('id','Not available')
+            gender = Gender.objects.get(pk=id)
+            if request.method == 'POST':
+                form = GenderForm(request.POST, instance=gender)
+        
+                if form.is_valid():
+                    form.save()
+                    return redirect('/library/gender')
+            else:
+                form = GenderForm(instance=gender)
 
-        return render(request, 'bibilio/updateGender.html',{'form':form})      
+                return render(request, 'bibilio/updateGender.html',{'form':form})
+        else:
+            return redirect('/login')
+    else:
+        return redirect('/login')
 
 def deleteEditor(request):
     id=request.GET.get('id','Not available')
@@ -292,18 +415,28 @@ def deleteEditor(request):
     return redirect('/library/editor')
 
 def updateEditor(request):
-    id=request.GET.get('id','Not available')
-    editor = Editor.objects.get(pk=id)
-    if request.method == 'POST':
-        form = GenderForm(request.POST, instance=editor)
- 
-        if form.is_valid():
-            form.save()
-            return redirect('/library/editor')
-    else:
-        form = EditorForm(instance=editor)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            id=request.GET.get('id','Not available')
+            editor = Editor.objects.get(pk=id)
+            if request.method == 'POST':
+                form = GenderForm(request.POST, instance=editor)
+        
+                if form.is_valid():
+                    form.save()
+                    return redirect('/library/editor')
+            else:
+                form = EditorForm(instance=editor)
 
-        return render(request, 'bibilio/updateEditor.html',{'form':form})       
+                return render(request, 'bibilio/updateEditor.html',{'form':form})    
+        else:
+            return redirect('/login')
+    else:
+        return redirect('/login')
 
 def deleteAuthor(request):
     id=request.GET.get('id','Not available')
@@ -311,18 +444,28 @@ def deleteAuthor(request):
     return redirect('/library/author')
 
 def updateAuthor(request):
-    id=request.GET.get('id','Not available')
-    author = Author.objects.get(pk=id)
-    if request.method == 'POST':
-        form = AuthorForm(request.POST, instance=author)
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            id=request.GET.get('id','Not available')
+            author = Author.objects.get(pk=id)
+            if request.method == 'POST':
+                form = AuthorForm(request.POST, instance=author)
 
-        if form.is_valid():
-            form.save()
-            return redirect('/library/author')
+                if form.is_valid():
+                    form.save()
+                    return redirect('/library/author')
+            else:
+                form = AuthorForm(instance=author)
+
+            return render(request, 'bibilio/updateAuthor.html',{'form':form}) 
+        else:
+            return redirect('/login')
     else:
-        form = AuthorForm(instance=author)
-
-        return render(request, 'bibilio/updateAuthor.html',{'form':form}) 
+        return redirect('/login')
 
 def loanBook(request):
     #Get all Loan by profile
@@ -339,22 +482,32 @@ def loanBook(request):
         return redirect('/')
 
 def createLoanBook(request):
-    id=request.GET.get('id','Not available')
-    book = get_object_or_404(Book, pk=id)
-    if request.method == 'POST':
-        form = LoanForm(request.POST)
-        if form.is_valid():  
-            #adding profile to loan
-            user = request.user
-            profile = Profile.objects.get(user=user)
-            form.instance.profile = profile
-            form.instance.borrowed = 1
-            form.save()
-            form.instance.book.set([book])
-            return redirect('/loanBook')
+    if request.user.is_authenticated:
+        #get user object
+        user = request.user
+        #get user profile
+        profile = Profile.objects.get(user=user)
+        if profile.is_staff == 1:
+            id=request.GET.get('id','Not available')
+            book = get_object_or_404(Book, pk=id)
+            if request.method == 'POST':
+                form = LoanForm(request.POST)
+                if form.is_valid():  
+                    #adding profile to loan
+                    user = request.user
+                    profile = Profile.objects.get(user=user)
+                    form.instance.profile = profile
+                    form.instance.borrowed = 1
+                    form.save()
+                    form.instance.book.set([book])
+                    return redirect('/loanBook')
+            else:
+                form = LoanForm()
+                return render(request, 'bibilio/loanBookCreate.html', {'form':form})
+        else:
+            return redirect('/login')
     else:
-        form = LoanForm()
-        return render(request, 'bibilio/loanBookCreate.html', {'form':form})
+        return redirect('/login')
 
 def deleteLoanBook(request, loan_id):
     loan = get_object_or_404(Loan, pk=loan_id)
