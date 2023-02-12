@@ -9,12 +9,17 @@
       <thead>
         <tr>
             <th>Titre</th>
+            <th>Utilisateur</th>
         </tr>
       </thead>
       <tbody>
         {% for item in forum %}
             <tr>
                 <td>{{ item.title }}</td>
+                <td>{{ item.creator.firstname }}</td>
+                <td>
+                    <a class="btn btn-primary" href="messageForum/?id={{ item.id }}">Voir</a>
+                </td>
             </tr>
         {% endfor %}
       </tbody>
