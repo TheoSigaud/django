@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+    <h1>Liste de mes emprunts</h1>
+
+    <!-- <a class="btn btn-primary ms-3" href="/library/gender/createGender">Emprunter un livre</a> -->
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>Date de retour</th>
+            <th>En cours ?</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in loanBook %}
+            <tr>
+                <td>{{ item.date_end }}</td>
+                <td>{{ item.borrowed }}</td>
+                <td>
+                  {% if item.borrowed == True %}
+                    <a href="{% url 'deleteLoanBook' item.id %}" class="btn btn-primary">Rendre le livre</a>
+                  {% else %}
+                    <button class="btn btn-primary" disabled>Livre rendu</button>
+                  {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endblock content %}

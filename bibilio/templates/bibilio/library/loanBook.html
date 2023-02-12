@@ -1,0 +1,30 @@
+{% extends 'baseLibrary.html' %} {% block content %}
+
+<div class="container">
+    <h1>Liste de mes emprunts</h1>
+
+    <!-- <a class="btn btn-primary ms-3" href="/library/gender/createGender">Emprunter un livre</a> -->
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>Date de retour</th>
+            <th>En cours ?</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in loanBook %}
+            <tr>
+                <td>{{ item.date_end }}</td>
+                <td>{{ item.borrowed }}</td>
+                <td>
+                    <!-- <a class="btn btn-primary" href="update/?id={{ item.id }}">Rendre le livre</a> -->
+                    <!-- <a class="btn btn-danger" href="delete/?id={{ item.id }}">Supprimer</a> -->
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endblock content %}

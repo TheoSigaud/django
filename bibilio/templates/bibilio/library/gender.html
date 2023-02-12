@@ -1,9 +1,9 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'baseLibrary.html' %} {% block content %}
 
 <div class="container">
-    <h1>Liste des éditeurs</h1>
+    <h1>Liste des genres</h1>
 
-    <a class="btn btn-primary ms-3" href="/library/editor/createEditor">Ajouter un éditeur</a>
+    <a class="btn btn-primary ms-3" href="/library/gender/createGender">Ajouter un genre</a>
 
     <table class="table table-striped">
       <thead>
@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for item in editors %}
+        {% for item in genders %}
             <tr>
                 <td>{{ item.name }}</td>
                 <td>
