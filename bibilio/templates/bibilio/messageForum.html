@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+    {% for item in forum %}
+        <h1>{{ item.title }}</h1>
+        <a class="btn btn-primary ms-3" href="/createMessage/?id={{ item.id }}">Poster un message</a>
+    {% endfor %}
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>Message</th>
+            <th>Auteur</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in messages %}
+            <tr>
+                <td>{{ item.content }}</td>
+                <td>{{ item.author.firstname }}</td>
+                <td>{{ item.creation_date }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endblock content %}

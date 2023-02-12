@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import signin,signout, home, book, createAuthor, author, editor, gender, createEditor, createGender, createBook, registration_views, deleteBook, updateBook, deleteGender, updateGender, deleteEditor, updateEditor, deleteAuthor, updateAuthor, home, createGroup, group, deleteGroup, updateGroup, listGroup, forum, loanBook, createLoanBook, deleteLoanBook
+from .views import signin,signout, home, book, createAuthor, author, editor, gender, createEditor, createGender, createBook, registration_views, deleteBook, updateBook, deleteGender, updateGender, deleteEditor, updateEditor, deleteAuthor, updateAuthor, home, createGroup, group, deleteGroup, updateGroup, listGroup, forum, loanBook, createLoanBook, deleteLoanBook, , createForum, messageForum, createMessage, listGroup, joinGroup, leaveGroup
+
 
 urlpatterns = [
     path('home/', home),
@@ -43,17 +44,21 @@ urlpatterns = [
     path('library/author/delete/', deleteAuthor, name = 'deleteAuthor'),
     path('library/author/update/', updateAuthor, name = 'updateAuthor'),
     path('group/createGroup/', createGroup, name = 'createGroup'),
+    path('createForum/', createForum, name = 'createForum'),
     path('group/', group, name = 'group'),
-    path('list-group/', listGroup, name = 'list-group'),
     path('group/delete/', deleteGroup, name = 'deleteGroup'),
     path('group/update/', updateGroup, name = 'updateGroup'),
+    path('forum/messageForum/', messageForum, name = 'messageForum'),
     path('forum/', forum, name='forum'),
     path('loanBook/', loanBook, name='loanBook'),
     path('loanBook/create', createLoanBook, name='createLoanBook'),
     path('book/', book, name = 'book'),
     path('library/loanBook', loanBook, name = 'loanBook'),
     path('deleteLoanBook/<int:loan_id>/', deleteLoanBook, name = 'deleteLoanBook'),
-
+    path('listGroup/', listGroup, name='listGroup'),
+    path('joinGroup/', joinGroup, name='joinGroup'),
+    path('leaveGroup/', leaveGroup, name='leaveGroup'),
+    path('createMessage/', createMessage, name='createMessage'),
 ]
 
 if settings.DEBUG:

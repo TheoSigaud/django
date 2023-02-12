@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm
-from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm, ForumForm, LoanForm
-from bibilio.models import Book, Author, Gender, Editor, Group, Forum, Loan
+from bibilio.forms import BookForm, AuthorForm, GenderForm, EditorForm, GroupForm, ForumForm, LoanForm, MessageForm
+from bibilio.models import Book, Author, Gender, Editor, Group, Forum, Loan, Message
 from django.contrib.auth.forms import AuthenticationForm, authenticate
 from .forms import RegisterForm
 from .models import Profile, User
@@ -272,11 +272,41 @@ def listGroup(request):
         profile = Profile.objects.get(user=user)
         if profile.is_staff == 1:
             group = Group.objects.all()
-            return render(request, 'bibilio/listGroup.html', {'group':group})
+              profile, created = Profile.objects.get_or_create(user=request.user)
+
+              return render(request, 'bibilio/listGroup.html', {'group': group, 'profile': profile})
         else:
             return redirect('/login')
     else:
-        return redirect('/login')
+        return redirect('/login') 
+
+def leaveGroup(request):
+    id = request.GET.get('id')
+    group = Group.objects.filter(pk=id).first()
+    profile = request.user.profile
+
+    if id:
+        group = Group.objects.filter(pk=id)
+        if not group.exists():
+            return redirect('/listGroup')
+        if group and profile:
+            profile.group_set.remove(id)
+            return redirect('/listGroup')
+    else:
+        return redirect('/listGroup')
+
+def joinGroup(request):
+    id = request.GET.get('id', None)
+    if id:
+        group = Group.objects.filter(pk=id)
+        if not group.exists():
+            return redirect('/listGroup')
+        group = get_object_or_404(Group, id=id)
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        profile.group_set.add(group)
+        return redirect('/listGroup')
+    else:
+        return redirect('/listGroup')
 
 def deleteGroup(request):
     id = request.GET.get('id', 'Not available')
@@ -308,6 +338,20 @@ def updateGroup(request):
             return redirect('/login')
     else:
         return redirect('/login')
+
+def messageForum(request):
+    id = request.GET.get('id', None)
+
+    if id:
+        forum = Forum.objects.filter(pk=id)
+        if not forum.exists():
+            return redirect('/forum')
+
+        messages = Message.objects.filter(forum__id=id)
+    else:
+        return redirect('/forum')
+
+    return render(request, 'bibilio/messageForum.html', {'messages': messages, 'forum': forum})
 
 def home(request):
     if request.user.is_authenticated:
@@ -358,6 +402,40 @@ def createEditor(request):
             return redirect('/login')
     else:
         return redirect('/login')
+
+def createMessage(request):
+    forum_id = request.GET.get('id')
+    forum = Forum.objects.filter(pk=forum_id)
+    if not forum.exists():
+        return redirect('/forum')
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+
+        if form.is_valid():
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            message = form.save(commit=False)
+            message.forum = Forum.objects.get(id=forum_id)
+            message.author = profile
+            message.save()
+            return redirect('/forum/messageForum/?id='+forum_id)
+    else:
+        form = MessageForm()
+        return render(request, 'bibilio/createMessage.html',{'form':form})
+
+def createForum(request):
+    if request.method == 'POST':
+        form = ForumForm(request.POST)
+
+        if form.is_valid():
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            forum = form.save(commit=False)
+            forum.creator = profile
+            forum.save()
+            return redirect('/forum')
+    else:
+        form = ForumForm()
+        return render(request, 'bibilio/createForum.html',{'form':form})
 
 def createGender(request):
     if request.user.is_authenticated:
